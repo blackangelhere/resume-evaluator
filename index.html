@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <title>AI Resume Evaluator</title>
+  <script>
+    async function submitForm() {
+      const fileInput = document.getElementById("resume");
+      const jobDesc = document.getElementById("job_desc").value;
+
+      const formData = new FormData();
+      formData.append("resume", fileInput.files[0]);
+      formData.append("job_desc", jobDesc);
+
+      const res = await fetch("http://localhost:8000/analyze_resume/", {
+        method: "POST",
+        body: formData,
+      });
+
+      const data = await res.json();
+      document.getElementById("result").innerText = data.analysis;
+    }
+  </script>
+</head>
+<body>
+  <h1>AI Resume Evaluator</h1>
+  <input type="file" id="resume" /><br><br>
+  <textarea id="job_desc" rows="6" cols="50" placeholder="Paste job description (optional)"></textarea><br><br>
+  <button onclick="submitForm()">Analyze Resume</button>
+  <pre id="result" style="white-space: pre-wrap; margin-top: 20px;"></pre>
+</body>
+</html>
